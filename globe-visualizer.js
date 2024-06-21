@@ -179,6 +179,7 @@ export class GlobeVisualizer {
             .arcDashLength(1)
             .arcDashGap(1)
             .arcDashAnimateTime(d => d.duration)
+            .arcAltitude(0.15)
             .customLayerData(this.gData)
             .customThreeObject(d => {
                 if (d.shape === 'heart') {
