@@ -171,7 +171,7 @@ export class GlobeVisualizer {
             (document.getElementById(this.containerId))
             .pointOfView({ lat: -8, lng: 10, altitude: 2 })
             .backgroundColor('#023C8B00')
-            .showGlobe(false)
+            .showGlobe(true)
             .showAtmosphere(true)
             .arcsData(this.arcsData)
             .arcColor('color')
@@ -179,7 +179,7 @@ export class GlobeVisualizer {
             .arcDashLength(1)
             .arcDashGap(1)
             .arcDashAnimateTime(d => d.duration)
-            .arcAltitude(0.15)
+            .arcAltitude(0.2)
             .customLayerData(this.gData)
             .customThreeObject(d => {
                 if (d.shape === 'heart') {
@@ -197,6 +197,9 @@ export class GlobeVisualizer {
             });
 
         this.world.controls().enableZoom = false;
+
+        this.world.globeMaterial().emissive = new THREE.Color('#023C8B');
+
         this.startParticleAnimationAtDestination();
     }
 
@@ -215,7 +218,8 @@ export class GlobeVisualizer {
                 this.world
                     .polygonsData(topojson.feature(landTopo, landTopo.objects.land).features)
                     .polygonCapMaterial(new THREE.MeshLambertMaterial({ color: '#0662B9', side: THREE.DoubleSide }))
-                    .polygonSideColor(() => '#023C8B');
+                    .polygonSideColor(() => '#023C8B')
+                    .polygonAltitude(0.008)
             });
     }
 
