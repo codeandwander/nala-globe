@@ -42,6 +42,19 @@ export class GlobeVisualizer {
         } else if (region === 'UK') {
             lat = (Math.random() * (59 - 50) + 50);
             lng = (Math.random() * (2 - -7) + -7);
+        } else if (region === 'Africa') {
+            const africanTargets = [
+                { lat: 9.082, lng: 8.6753 }, // Nigeria
+                { lat: 7.9465, lng: -1.0232 }, // Ghana
+                { lat: -1.2921, lng: 36.8219 }, // Kenya
+                { lat: 3.848, lng: 11.5021 }, // Cameroon
+                { lat: -30.5595, lng: 22.9375 }, // South Africa
+                { lat: 1.3733, lng: 32.2903 }, // Uganda
+                { lat: -1.9403, lng: 29.8739 } // Rwanda
+            ];
+            const target = africanTargets[Math.floor(Math.random() * africanTargets.length)];
+            lat = target.lat;
+            lng = target.lng;
         }
         return { lat, lng };
     }
@@ -57,19 +70,29 @@ export class GlobeVisualizer {
             { lat: -1.9403, lng: 29.8739 } // Rwanda
         ];
 
-        const regions = ['US', 'Europe', 'Italy', 'UK'];
+        const europeanTargets = [
+            { lat: 50.1109, lng: 8.6821 }, // Frankfurt, Germany
+            { lat: 48.8566, lng: 2.3522 }, // Paris, France
+            { lat: 51.5074, lng: -0.1278 }, // London, UK
+            { lat: 41.9028, lng: 12.4964 } // Rome, Italy
+        ];
+
+        const regions = ['US', 'Europe', 'Italy', 'UK', 'Africa'];
         const targetIndices = {
             'US': [5, 6], // Uganda, Rwanda
             'Europe': [0, 1, 2, 3],
             'Italy': [4], // South Africa
-            'UK': [4] // South Africa
+            'UK': [4], // South Africa
+            'Africa': [0, 1, 2, 3] // European targets
         };
 
         regions.forEach(region => {
             const numLines = region === 'US' ? 2 : (region === 'Italy' || region === 'UK') ? 2 : 1;
             for (let i = 0; i < numLines; i++) {
                 const start = this.getRandomLocation(region);
-                const end = targets[targetIndices[region][Math.floor(Math.random() * targetIndices[region].length)]];
+                const endRegion = region === 'Africa' ? 'Europe' : region;
+                const endTargets = endRegion === 'Africa' ? europeanTargets : targets;
+                const end = endTargets[targetIndices[region][Math.floor(Math.random() * targetIndices[region].length)]];
                 const duration = Math.random() * 3000 + 2000;
 
                 this.arcsData.push({
@@ -198,7 +221,7 @@ export class GlobeVisualizer {
             .arcDashLength(1)
             .arcDashGap(1)
             .arcDashAnimateTime(d => d.duration)
-            .arcAltitude(0.2)
+            .arcAltitude(0.2);
             // .customLayerData(this.gData)
             // .customThreeObject(d => {
             //     if (d.shape === 'heart') {
@@ -238,7 +261,7 @@ export class GlobeVisualizer {
                     .polygonsData(topojson.feature(landTopo, landTopo.objects.land).features)
                     .polygonCapMaterial(new THREE.MeshLambertMaterial({ color: '#0662B9', side: THREE.DoubleSide }))
                     .polygonSideColor(() => '#023C8B')
-                    .polygonAltitude(0.008)
+                    .polygonAltitude(0.008);
             });
     }
 
