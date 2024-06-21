@@ -29,7 +29,8 @@ html
 
 Copy code
 
-`<!DOCTYPE html>
+```html
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -49,7 +50,8 @@ Copy code
 <body>
     <div id="globeViz"></div>
 </body>
-</html>`
+</html>
+```
 
 1.  Ensure your JavaScript file (`globe.js`) is available in your GitHub repository and correctly referenced in the import statement. Replace `yourusername` and `your-repo` with your actual GitHub username and repository name.
 
