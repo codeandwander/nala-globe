@@ -36,42 +36,61 @@ export class GlobeVisualizer {
         } else if (region === 'Europe') {
             lat = (Math.random() * (71 - 35) + 35);
             lng = (Math.random() * (40 - -10) + -10);
+        } else if (region === 'Italy') {
+            lat = (Math.random() * (47 - 35) + 35);
+            lng = (Math.random() * (18 - 6) + 6);
+        } else if (region === 'UK') {
+            lat = (Math.random() * (59 - 50) + 50);
+            lng = (Math.random() * (2 - -7) + -7);
         }
         return { lat, lng };
     }
 
     generateData() {
         const targets = [
-            { lat: 9.082, lng: 8.6753 },
-            { lat: 7.9465, lng: -1.0232 },
-            { lat: -1.2921, lng: 36.8219 },
-            { lat: 3.848, lng: 11.5021 }
+            { lat: 9.082, lng: 8.6753 }, // Nigeria
+            { lat: 7.9465, lng: -1.0232 }, // Ghana
+            { lat: -1.2921, lng: 36.8219 }, // Kenya
+            { lat: 3.848, lng: 11.5021 }, // Cameroon
+            { lat: -30.5595, lng: 22.9375 }, // South Africa
+            { lat: 1.3733, lng: 32.2903 }, // Uganda
+            { lat: -1.9403, lng: 29.8739 } // Rwanda
         ];
 
-        for (let i = 0; i < 5; i++) {
-            const region = Math.random() > 0.5 ? 'US' : 'Europe';
-            const start = this.getRandomLocation(region);
-            const end = targets[Math.floor(Math.random() * targets.length)];
-            const duration = Math.random() * 3000 + 2000;
+        const regions = ['US', 'Europe', 'Italy', 'UK'];
+        const targetIndices = {
+            'US': [5, 6], // Uganda, Rwanda
+            'Europe': [0, 1, 2, 3],
+            'Italy': [4], // South Africa
+            'UK': [4] // South Africa
+        };
 
-            this.arcsData.push({
-                startLat: start.lat,
-                startLng: start.lng,
-                endLat: end.lat,
-                endLng: end.lng,
-                duration: duration,
-                color: ['#00A2DC', '#FFF']
-            });
+        regions.forEach(region => {
+            const numLines = region === 'US' ? 2 : (region === 'Italy' || region === 'UK') ? 2 : 1;
+            for (let i = 0; i < numLines; i++) {
+                const start = this.getRandomLocation(region);
+                const end = targets[targetIndices[region][Math.floor(Math.random() * targetIndices[region].length)]];
+                const duration = Math.random() * 3000 + 2000;
 
-            this.gData.push({
-                lat: end.lat,
-                lng: end.lng,
-                alt: 0.05,
-                shape: 'heart',
-                color: 'blue',
-                duration: duration
-            });
-        }
+                this.arcsData.push({
+                    startLat: start.lat,
+                    startLng: start.lng,
+                    endLat: end.lat,
+                    endLng: end.lng,
+                    duration: duration,
+                    color: ['#00A2DC', '#FFF']
+                });
+
+                this.gData.push({
+                    lat: end.lat,
+                    lng: end.lng,
+                    alt: 0.05,
+                    shape: 'heart',
+                    color: 'blue',
+                    duration: duration
+                });
+            }
+        });
     }
 
     createHeartParticleCanvas() {
