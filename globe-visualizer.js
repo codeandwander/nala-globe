@@ -117,10 +117,10 @@ export class GlobeVisualizer {
                 }
                 if (this.size > 0.2) this.size -= 0.1;
             },
-            draw: function () {
-                this.ctx.globalAlpha = this.opacity;
-                this.ctx.drawImage(this.img, this.x, this.y, this.size, this.size);
-                this.ctx.globalAlpha = 1;
+            draw: function (ctx, img) {
+                ctx.globalAlpha = this.opacity;
+                ctx.drawImage(img, this.x, this.y, this.size, this.size);
+                ctx.globalAlpha = 1;
             }
         };
     }
@@ -142,7 +142,7 @@ export class GlobeVisualizer {
         this.ctx.clearRect(0, 0, this.particleCanvas.width, this.particleCanvas.height);
         for (let i = 0; i < this.particles.length; i++) {
             this.particles[i].update();
-            this.particles[i].draw();
+            this.particles[i].draw(this.ctx, this.img);
             if (this.particles[i].size <= 0.3) {
                 this.particles.splice(i, 1);
                 i--;
