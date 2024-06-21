@@ -1,4 +1,4 @@
-Globe 
+Globe Visualizer
 ================
 
 This project is a 3D globe visualization using Three.js and additional libraries to display arcs and particles on a globe. The visualization highlights random locations in the US or Europe, drawing arcs to predetermined target locations in Africa and animating heart-shaped particles at the target locations.
@@ -36,10 +36,10 @@ Copy code
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Globe Visualizer</title>
-    <script type="module"> import { Globe } from 'https://cdn.jsdelivr.net/gh/codeandwander/nala-globe@latest/globe.js';
+    <script type="module"> import { GlobeVisualizer } from 'https://cdn.jsdelivr.net/gh/codeandwander/nala-globe@latest/globe-visualizer.js';
 
         document.addEventListener('DOMContentLoaded', () => {
-            const globe = new Globe('globeViz');
+            const globeVisualizer = new GlobeVisualizer('globeViz');
         }); </script>
     <style> #globeViz {
             width: 100%;
@@ -53,11 +53,11 @@ Copy code
 </html>
 ```
 
-1.  Ensure your JavaScript file (`globe.js`) is available in your GitHub repository and correctly referenced in the import statement. Replace `yourusername` and `your-repo` with your actual GitHub username and repository name.
+1.  Ensure your JavaScript file (`globe-visualizer.js`) is available in your GitHub repository and correctly referenced in the import statement. Replace `yourusername` and `your-repo` with your actual GitHub username and repository name.
 
 ### How It Works
 
--   **Globe Class**: The core of the visualization, initializing the globe, generating data, and managing animations.
+-   **GlobeVisualizer Class**: The core of the visualization, initializing the globe, generating data, and managing animations.
 -   **getRandomLocation(region)**: Generates random coordinates within specified regions (US or Europe).
 -   **generateData()**: Creates arcs and particles data for the visualization.
 -   **createHeartParticleCanvas()**: Sets up the heart particle canvas using SVG data.
@@ -74,6 +74,16 @@ Copy code
 ### Customization
 
 You can customize the behavior and appearance of the visualization by modifying the class properties and methods. For example, you can change the target locations, arc colors, particle shapes, and animation durations to fit your needs.
+
+Contributing
+------------
+
+Contributions are welcome! Please fork the repository and submit pull requests for any features, bug fixes, or enhancements.
+
+License
+-------
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 Acknowledgments
 ---------------

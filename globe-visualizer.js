@@ -1,6 +1,6 @@
 import * as THREE from '//unpkg.com/three/build/three.module.js';
 
-export class Globe {
+export class GlobeVisualizer {
     constructor(containerId) {
         this.containerId = containerId;
         this.arcsData = [];
