@@ -199,21 +199,21 @@ export class GlobeVisualizer {
             .arcDashGap(1)
             .arcDashAnimateTime(d => d.duration)
             .arcAltitude(0.2)
-            .customLayerData(this.gData)
-            .customThreeObject(d => {
-                if (d.shape === 'heart') {
-                    const sprite = this.createHeartParticles();
-                    d.sprite = sprite;
-                    return sprite;
-                }
-                return new THREE.Mesh(
-                    new THREE.SphereGeometry(d.radius),
-                    new THREE.MeshLambertMaterial({ color: d.color })
-                );
-            })
-            .customThreeObjectUpdate((obj, d) => {
-                Object.assign(obj.position, this.world.getCoords(d.lat, d.lng, d.alt));
-            });
+            // .customLayerData(this.gData)
+            // .customThreeObject(d => {
+            //     if (d.shape === 'heart') {
+            //         const sprite = this.createHeartParticles();
+            //         d.sprite = sprite;
+            //         return sprite;
+            //     }
+            //     return new THREE.Mesh(
+            //         new THREE.SphereGeometry(d.radius),
+            //         new THREE.MeshLambertMaterial({ color: d.color })
+            //     );
+            // })
+            // .customThreeObjectUpdate((obj, d) => {
+            //     Object.assign(obj.position, this.world.getCoords(d.lat, d.lng, d.alt));
+            // });
 
         this.world.controls().enableZoom = false;
 
