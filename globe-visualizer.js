@@ -26,6 +26,8 @@ export class GlobeVisualizer {
         this.createWorld();
         this.loadLandData();
         this.addResetViewListener();
+        window.addEventListener('resize', this.onWindowResize.bind(this));
+        this.onWindowResize(); // Initial resize to set the correct size
     }
 
     getRandomLocation(region) {
@@ -274,5 +276,14 @@ export class GlobeVisualizer {
                 this.world.pointOfView({ lat: -8, lng: 10 }, 1000);
             }, 200);
         });
+    }
+
+    onWindowResize() {
+        const container = document.getElementById(this.containerId);
+        if (container) {
+            const { width, height } = container.getBoundingClientRect();
+            this.world.width([width]);
+            this.world.height([height]);
+        }
     }
 }
