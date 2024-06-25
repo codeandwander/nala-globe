@@ -9,12 +9,14 @@ export class TwinklingStars {
       this.maxStarSize = maxStarSize;
       this.twinkleFrequency = twinkleFrequency;
       this.twinkleSpeed = twinkleSpeed;
-      this.prevWidth = this.container.clientWidth;
-      this.prevHeight = this.container.clientHeight;
+      this.lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      this.lastWidth = this.canvas.width;
+      this.lastHeight = this.canvas.height;
 
       this.initializeCanvas();
       this.createStars();
       this.animate();
+      this.attachEventHandlers();
   }
 
   initializeCanvas() {
@@ -25,20 +27,18 @@ export class TwinklingStars {
   resizeCanvas() {
       const newWidth = this.container.clientWidth;
       const newHeight = this.container.clientHeight;
-      const deltaX = newWidth - this.prevWidth;
-      const deltaY = newHeight - this.prevHeight;
+      const widthDelta = newWidth - this.lastWidth;
+      const heightDelta = newHeight - this.lastHeight;
+
+      this.stars.forEach(star => {
+          star.x += widthDelta * (star.size / this.maxStarSize);
+          star.y += heightDelta * (star.size / this.maxStarSize);
+      });
 
       this.canvas.width = newWidth;
       this.canvas.height = newHeight;
-
-      // Update star positions based on the change in dimensions to create a parallax effect
-      this.stars.forEach(star => {
-          star.x += deltaX * (star.x / this.prevWidth);
-          star.y += deltaY * (star.y / this.prevHeight);
-      });
-
-      this.prevWidth = newWidth;
-      this.prevHeight = newHeight;
+      this.lastWidth = newWidth;
+      this.lastHeight = newHeight;
   }
 
   createStars() {
@@ -77,6 +77,18 @@ export class TwinklingStars {
           // Interpolate opacity
           star.opacity += (star.targetOpacity - star.opacity) * this.twinkleSpeed;
           return star;
+      });
+  }
+
+  attachEventHandlers() {
+      window.addEventListener('scroll', () => {
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const delta = scrollTop - this.lastScrollTop;
+          this.lastScrollTop = scrollTop;
+
+          this.stars.forEach(star => {
+              star.y += delta * (star.size / this.maxStarSize);
+          });
       });
   }
 }
