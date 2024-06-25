@@ -1,12 +1,14 @@
-export class TwinklingStars {
-  constructor(canvasId, starCount = 100, maxStarSize = 1.5, twinkleFrequency = 1000, twinkleSpeed = 0.02) {
-      this.canvas = document.getElementById(canvasId);
+class TwinklingStars {
+  constructor(divId, starCount = 100, maxStarSize = 1.5, twinkleFrequency = 1000, twinkleSpeed = 0.02) {
+      this.container = document.getElementById(divId);
+      this.canvas = document.createElement('canvas');
+      this.container.appendChild(this.canvas);
       this.ctx = this.canvas.getContext('2d');
       this.stars = [];
       this.starCount = starCount;
       this.maxStarSize = maxStarSize;
       this.twinkleFrequency = twinkleFrequency;
-      this.twinkleSpeed = twinkleSpeed; // Rate of opacity change per frame
+      this.twinkleSpeed = twinkleSpeed;
 
       this.initializeCanvas();
       this.createStars();
@@ -14,13 +16,14 @@ export class TwinklingStars {
   }
 
   initializeCanvas() {
-      this.canvas.width = window.innerWidth;
-      this.canvas.height = window.innerHeight;
-      window.addEventListener('resize', () => {
-          this.canvas.width = window.innerWidth;
-          this.canvas.height = window.innerHeight;
-          this.createStars();
-      });
+      this.resizeCanvas();
+      window.addEventListener('resize', () => this.resizeCanvas());
+  }
+
+  resizeCanvas() {
+      this.canvas.width = this.container.clientWidth;
+      this.canvas.height = this.container.clientHeight;
+      this.createStars();
   }
 
   createStars() {
