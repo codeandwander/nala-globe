@@ -1,4 +1,4 @@
-class TwinklingStars {
+export class TwinklingStars {
   constructor(divId, starCount = 100, maxStarSize = 1.5, twinkleFrequency = 1000, twinkleSpeed = 0.02) {
       this.container = document.getElementById(divId);
       this.canvas = document.createElement('canvas');
