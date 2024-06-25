@@ -1,4 +1,4 @@
-export class TwinklingStars {
+class TwinklingStars {
   constructor(divId, starCount = 100, maxStarSize = 1.5, twinkleFrequency = 1000, twinkleSpeed = 0.02) {
       this.container = document.getElementById(divId);
       this.canvas = document.createElement('canvas');
@@ -9,6 +9,8 @@ export class TwinklingStars {
       this.maxStarSize = maxStarSize;
       this.twinkleFrequency = twinkleFrequency;
       this.twinkleSpeed = twinkleSpeed;
+      this.prevWidth = this.container.clientWidth;
+      this.prevHeight = this.container.clientHeight;
 
       this.initializeCanvas();
       this.createStars();
@@ -21,9 +23,22 @@ export class TwinklingStars {
   }
 
   resizeCanvas() {
-      this.canvas.width = this.container.clientWidth;
-      this.canvas.height = this.container.clientHeight;
-      this.createStars();
+      const newWidth = this.container.clientWidth;
+      const newHeight = this.container.clientHeight;
+      const deltaX = newWidth - this.prevWidth;
+      const deltaY = newHeight - this.prevHeight;
+
+      this.canvas.width = newWidth;
+      this.canvas.height = newHeight;
+
+      // Update star positions based on the change in dimensions to create a parallax effect
+      this.stars.forEach(star => {
+          star.x += deltaX * (star.x / this.prevWidth);
+          star.y += deltaY * (star.y / this.prevHeight);
+      });
+
+      this.prevWidth = newWidth;
+      this.prevHeight = newHeight;
   }
 
   createStars() {
