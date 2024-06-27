@@ -23,8 +23,6 @@ export class GlobeVisualizer {
     this.arcsData = [];
     this.gData = [];
     this.world = null;
-    this.particleCanvas = document.createElement('canvas');
-    this.ctx = this.particleCanvas.getContext('2d');
     this.resetViewTimeout = null;
 
     this.initialize();
@@ -119,31 +117,11 @@ export class GlobeVisualizer {
         duration: duration,
         color: ['#00A2DC', '#FFF']
       });
-
-      this.gData.push({
-        lat: end.lat,
-        lng: end.lng,
-        size: 32,
-        color: 'white'
-      });
-    }
-
-    // Generate clouds 
-    for (let i = 0; i < 50; i++) {
-      const latLng = this.getRandomLatLng();
-      
-      this.gData.push({
-        lat: latLng.lat,
-        lng: latLng.lng,
-        size: Math.random() * (50 - 2) + 10,
-        opacity: Math.random(),
-        type: 'cloud'
-      });
     }
 
     // Generate other arcs
     regions.forEach(region => {
-      const numLines = region === 'US' ? 2 : (region === 'Italy' || region === 'UK') ? 2 : 1;
+      const numLines = region === 'US' ? 1 : (region === 'Italy' || region === 'UK') ? 1 : 1;
       for (let i = 0; i < numLines; i++) {
         const start = this.getRandomLocation(region);
         const endRegion = region === 'Africa' ? 'Europe' : region;
@@ -159,48 +137,30 @@ export class GlobeVisualizer {
           duration: duration,
           color: ['#00A2DC', '#FFF']
         });
-
-        this.gData.push({
-          lat: end.lat,
-          lng: end.lng,
-          size: 32,
-          color: 'white'
-        });
       }
     });
+    
+    markers.forEach((marker, i) => {
+      this.gData.push({
+        marker,
+        lat: this.arcsData[i+2].endLat,
+        lng: this.arcsData[i+2].endLng,
+        size: 32
+      })
+    })
   }
 
   createWorld() {
     this.texture = new THREE.CanvasTexture(this.particleCanvas);
 
-    const usedMarkers = new Set();
-    const getRandomMarker = () => {
-      if (usedMarkers.size >= markers.length) {
-        usedMarkers.clear(); // Reset the set if all markers have been used
-      }
-      let marker;
-      do {
-        marker = markers[Math.floor(Math.random() * markers.length)];
-      } while (usedMarkers.has(marker));
-      usedMarkers.add(marker);
-      return marker;
-    };
-
     this.world = Globe()
       .htmlElementsData(this.gData)
       .htmlElement(d => {
         const el = document.createElement('div');
-        el.innerHTML = d.type === 'cloud' ? clouds[0] : getRandomMarker();
-        el.style.color = d.color;
+        el.innerHTML = d.marker;
         el.style.width = `${d.size}px`;
-        el.style.opacity = d.opacity;
-
-        el.style['pointer-events'] = 'auto';
-        el.style.cursor = 'pointer';
-        el.onclick = () => console.info(d);
         return el;
       })
-      .htmlAltitude(d => d.type === 'cloud' ? 0.2 : 0.05)
       (document.getElementById(this.containerId))
       .pointOfView({ lat: -8, lng: 10, altitude: 2 })
       .backgroundColor('#023C8B00')
