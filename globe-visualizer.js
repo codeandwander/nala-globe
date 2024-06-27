@@ -162,7 +162,7 @@ export class GlobeVisualizer {
         return el;
       })
       (document.getElementById(this.containerId))
-      .pointOfView({ lat: -8, lng: 10, altitude: 2 })
+      .pointOfView({ lat: -8, lng: 24, altitude: 2 })
       .backgroundColor('#023C8B00')
       .showGlobe(true)
       .showAtmosphere(true)
@@ -196,7 +196,7 @@ export class GlobeVisualizer {
         clearTimeout(this.resetViewTimeout);
       }
       this.resetViewTimeout = setTimeout(() => {
-        this.world.pointOfView({ lat: -8, lng: 10 }, 1000);
+        this.world.pointOfView({ lat: -8, lng: 24 }, 1000);
       }, 200);
     });
   }
