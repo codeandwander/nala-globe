@@ -11,6 +11,12 @@ const markerImgs = [
 
 const markers = markerImgs.map(imageUrl => `<img src=${imageUrl} width="33" />`);
 
+const cloudImgs = [
+  "https://uploads-ssl.webflow.com/5f89ad61c0ef675e5948350e/667c32a4aee270c4aa5530b9_cloud.png"
+]
+
+const clouds = cloudImgs.map(imageUrl => `<img src=${imageUrl} style="width: 100%;" />`);
+
 export class GlobeVisualizer {
   constructor(containerId) {
     this.containerId = containerId;
@@ -31,6 +37,12 @@ export class GlobeVisualizer {
     this.addResetViewListener();
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize(); // Initial resize to set the correct size
+  }
+  
+  getRandomLatLng() {
+    const lat = Math.random() * 180 - 90;
+    const lng = Math.random() * 360 - 180;
+    return { lat, lng };
   }
 
   getRandomLocation(region) {
@@ -92,7 +104,7 @@ export class GlobeVisualizer {
     };
 
     // Generate arcs ending in Europe
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       const start = this.getRandomLocation('Africa');
       const end = europeanTargets[Math.floor(Math.random() * europeanTargets.length)];
       const duration = Math.random() * 3000 + 2000;
@@ -113,10 +125,23 @@ export class GlobeVisualizer {
         color: 'white'
       });
     }
+    
+    // Generate clouds 
+    for (let i = 0; i < 40; i++) {
+      const latLng = this.getRandomLatLng()
+      
+      this.gData.push({
+        lat: latLng.lat,
+        lng: latLng.lng,
+        size: Math.random() * (50 - 2) + 10,
+        opacity: Math.random(),
+        type: 'cloud'
+      });
+    }
 
     // Generate other arcs
     regions.forEach(region => {
-      const numLines = region === 'US' ? 1 : (region === 'Italy' || region === 'UK') ? 1 : 1;
+      const numLines = region === 'US' ? 2 : (region === 'Italy' || region === 'UK') ? 2 : 1;
       for (let i = 0; i < numLines; i++) {
         const start = this.getRandomLocation(region);
         const endRegion = region === 'Africa' ? 'Europe' : region;
@@ -163,17 +188,19 @@ export class GlobeVisualizer {
       .htmlElementsData(this.gData)
       .htmlElement(d => {
         const el = document.createElement('div');
-        el.innerHTML = getRandomMarker();
+        el.innerHTML = d.type === 'cloud' ? clouds[0] : getRandomMarker();
         el.style.color = d.color;
         el.style.width = `${d.size}px`;
+        el.style.opacity = d.opacity
 
         el.style['pointer-events'] = 'auto';
         el.style.cursor = 'pointer';
         el.onclick = () => console.info(d);
         return el;
       })
+      .htmlAltitude(d => d.type === 'cloud' ? 0.2 : 0.05)
       (document.getElementById(this.containerId))
-      .pointOfView({ lat: 0, lng: 24, altitude: 2 })
+      .pointOfView({ lat: -8, lng: 10, altitude: 2 })
       .backgroundColor('#023C8B00')
       .showGlobe(true)
       .showAtmosphere(true)
@@ -207,7 +234,7 @@ export class GlobeVisualizer {
         clearTimeout(this.resetViewTimeout);
       }
       this.resetViewTimeout = setTimeout(() => {
-        this.world.pointOfView({ lat: 0, lng: 24 }, 1000);
+        this.world.pointOfView({ lat: -8, lng: 10 }, 1000);
       }, 200);
     });
   }
