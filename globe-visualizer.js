@@ -38,10 +38,12 @@ export class GlobeVisualizer {
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize(); // Initial resize to set the correct size
   }
-  
+
   getRandomLatLng() {
-    const lat = Math.random() * 180 - 90;
-    const lng = Math.random() * 360 - 180;
+    const u = Math.random();
+    const v = Math.random();
+    const lat = Math.acos(2 * u - 1) / Math.PI * 180 - 90;
+    const lng = 360 * v - 180;
     return { lat, lng };
   }
 
@@ -125,10 +127,10 @@ export class GlobeVisualizer {
         color: 'white'
       });
     }
-    
+
     // Generate clouds 
-    for (let i = 0; i < 40; i++) {
-      const latLng = this.getRandomLatLng()
+    for (let i = 0; i < 50; i++) {
+      const latLng = this.getRandomLatLng();
       
       this.gData.push({
         lat: latLng.lat,
@@ -191,7 +193,7 @@ export class GlobeVisualizer {
         el.innerHTML = d.type === 'cloud' ? clouds[0] : getRandomMarker();
         el.style.color = d.color;
         el.style.width = `${d.size}px`;
-        el.style.opacity = d.opacity
+        el.style.opacity = d.opacity;
 
         el.style['pointer-events'] = 'auto';
         el.style.cursor = 'pointer';
