@@ -3,7 +3,7 @@ import * as THREE from '//unpkg.com/three/build/three.module.js';
 const markerImgs = [
   "https://uploads-ssl.webflow.com/5f89ad61c0ef675e5948350e/667c21b9fd8862143cbefa36_marker_1.png",
   "https://uploads-ssl.webflow.com/5f89ad61c0ef675e5948350e/667c21b974352812b5d54904_marker_2.png",
-  "https://uploads-ssl.webflow.com/5f89ad61c0ef675e5948350e/667c21b9116853eb6038fa10_marker_4.png",
+  //"https://uploads-ssl.webflow.com/5f89ad61c0ef675e5948350e/667c21b9116853eb6038fa10_marker_4.png",
   "https://uploads-ssl.webflow.com/5f89ad61c0ef675e5948350e/667c21b9aa413cca21c4dd10_marker_3.png",
   "https://uploads-ssl.webflow.com/5f89ad61c0ef675e5948350e/667c23f6c2c62c093707a3bd_marker_5.png",
   "https://uploads-ssl.webflow.com/5f89ad61c0ef675e5948350e/667c28d3dd6693e507236c5c_marker_6.png"
