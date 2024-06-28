@@ -121,7 +121,7 @@ export class GlobeVisualizer {
 
     // Generate other arcs
     regions.forEach(region => {
-      const numLines = region === 'US' ? 1 : (region === 'Italy' || region === 'UK') ? 1 : 1;
+      const numLines = region === 'US' ? 2 : (region === 'Italy' || region === 'UK') ? 1 : 1;
       for (let i = 0; i < numLines; i++) {
         const start = this.getRandomLocation(region);
         const endRegion = region === 'Africa' ? 'Europe' : region;
